@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+  <meta name="theme-color" content="#123c2d">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Scratched — Horse Racing</title>
+  <link rel="manifest" href="manifest.json">
+  <style>
+    :root{--ink:#25180d;--cream:#fff8e8;--paper:#f6e6bf;--green:#123c2d;--green2:#1c5941;--gold:#e5ad3d;--red:#a83b32;--muted:#725f48;--line:#d8bd87;--shadow:0 12px 30px #1f160c24}
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    body{margin:0;min-height:100dvh;color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:radial-gradient(circle at 50% -10%,#36785b,transparent 45%),var(--green);overscroll-behavior:none}
+    button,input{font:inherit} button{touch-action:manipulation}
+    .app{width:min(100%,760px);min-height:100dvh;margin:auto;background:var(--cream);box-shadow:0 0 70px #0008;position:relative;padding-bottom:max(18px,env(safe-area-inset-bottom))}
+    header{min-height:72px;padding:max(14px,env(safe-area-inset-top)) 18px 12px;color:#fff;background:linear-gradient(135deg,var(--green),#0d2f24);display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .brand{font-family:Georgia,serif;font-weight:900;font-size:clamp(23px,6vw,34px);letter-spacing:.02em}.brand small{display:block;font:700 10px system-ui;letter-spacing:.2em;color:#d8c28f;text-transform:uppercase}
+    .icon-btn{border:1px solid #ffffff3c;color:#fff;background:#ffffff12;border-radius:999px;min-width:44px;min-height:44px;font-size:21px}
+    main{padding:16px}
+    .card{background:#fff;border:1px solid #ead9b4;border-radius:20px;box-shadow:var(--shadow);padding:18px;margin-bottom:14px}
+    h1,h2,p{margin-top:0}h1,h2{font-family:Georgia,serif}h1{font-size:30px;margin-bottom:7px}h2{font-size:21px;margin-bottom:12px}.sub{color:var(--muted);line-height:1.45}
+    .hero{text-align:center;padding:26px 20px;background:linear-gradient(155deg,#fff 20%,#f5dfad)}
+    .hero-mark{font-size:68px;filter:drop-shadow(0 7px 5px #0002);margin:5px 0}
+    .primary,.secondary,.danger{border:0;border-radius:14px;min-height:52px;padding:12px 18px;font-weight:850;letter-spacing:.02em}.primary{color:#fff;background:linear-gradient(#267553,#174d38);box-shadow:0 7px 0 #0e3325}.primary:active{transform:translateY(4px);box-shadow:0 3px 0 #0e3325}.secondary{background:#efe1c2;color:var(--ink)}.danger{background:#f5d5d0;color:#852c25}.wide{width:100%}.row{display:flex;gap:10px}.row>*{flex:1}
+    label{display:block;font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}input,select{width:100%;padding:12px;border:1px solid var(--line);background:#fffdf7;border-radius:11px;color:var(--ink)}
+    .player-input{display:grid;grid-template-columns:30px 1fr 43px;gap:8px;align-items:center;margin:8px 0}.player-input b{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:var(--green);color:#fff}.remove{border:0;background:#f6e5df;color:var(--red);border-radius:10px;height:42px;font-weight:900}
+    .setup-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
+    .status{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}.phase{font-size:11px;font-weight:900;letter-spacing:.13em;text-transform:uppercase;color:var(--red)}.pot{background:#fff1c6;border:1px solid #e3bd57;border-radius:12px;padding:8px 12px;text-align:center;font-weight:900}.pot small{display:block;font-size:9px;color:#795e1a;letter-spacing:.12em}.turn{font-family:Georgia,serif;font-size:23px;font-weight:900;margin:2px 0}.instruction{font-size:13px;color:var(--muted);margin:3px 0 0}
+    .players{display:flex;gap:8px;overflow-x:auto;padding:2px 1px 10px;scrollbar-width:none}.player-chip{flex:0 0 auto;border:2px solid transparent;border-radius:14px;background:#efe6d4;padding:8px 10px;min-width:85px}.player-chip.active{border-color:var(--green);background:#def0e5}.player-chip strong{display:block;white-space:nowrap}.player-chip span{font-size:12px;color:var(--muted)}
+    .track{background:#e5c991;border:5px solid #9e7540;border-radius:18px;padding:9px 8px 10px;box-shadow:inset 0 0 25px #6643173c;overflow:hidden}.finish{font:900 11px system-ui;letter-spacing:.22em;text-align:right;padding-right:3px;margin-bottom:5px}.lane{display:grid;grid-template-columns:27px 1fr;align-items:center;gap:5px;height:31px}.num{font-weight:950;text-align:center}.rail{position:relative;height:24px;border-top:1px solid #b48c54;border-bottom:1px solid #f8e2b5;background:repeating-linear-gradient(90deg,transparent 0 calc(7.69% - 1px),#b6935c80 calc(7.69% - 1px) 7.69%)}.horse{position:absolute;top:-4px;left:calc(var(--p)*1%);transform:translateX(-50%);font-size:23px;transition:left .55s cubic-bezier(.2,.8,.2,1);filter:drop-shadow(1px 2px 1px #0004);z-index:2}.lane.scratched{opacity:.42}.lane.scratched .rail:after{content:'SCRATCHED';position:absolute;inset:0;display:grid;place-items:center;color:#792b24;font-size:9px;font-weight:950;letter-spacing:.17em}.lane.winner{background:#fff3a9;border-radius:7px;animation:pulse 1s infinite alternate}@keyframes pulse{to{filter:brightness(1.12)}}
+    .roll-zone{text-align:center;padding:15px 14px}.dice{display:flex;justify-content:center;gap:12px;margin:5px 0 13px}.die{width:54px;height:54px;background:#fff;border:2px solid #d7c6a3;border-radius:12px;display:grid;place-items:center;font:900 28px Georgia;box-shadow:0 5px 0 #c9b080}.dice.shake{animation:shake .35s}@keyframes shake{25%{transform:rotate(-3deg) scale(1.05)}75%{transform:rotate(3deg) scale(1.05)}}
+    .result{min-height:38px;font-weight:750;font-size:14px;line-height:1.35;color:var(--muted);margin-bottom:10px}.roll{font-size:19px;min-height:60px}.roll:disabled{filter:grayscale(.7);opacity:.55}.cards-btn{border:0;background:transparent;color:var(--green);font-weight:850;padding:11px}
+    dialog{width:min(92%,540px);max-height:86dvh;border:0;border-radius:22px;padding:0;background:var(--cream);color:var(--ink);box-shadow:0 30px 80px #0008}dialog::backdrop{background:#071a14c9;backdrop-filter:blur(3px)}.modal-head{position:sticky;top:0;background:var(--green);color:#fff;padding:16px 18px;display:flex;justify-content:space-between;align-items:center}.modal-head h2{margin:0}.close{border:0;background:#ffffff20;color:#fff;border-radius:50%;width:38px;height:38px;font-size:20px}.modal-body{padding:18px;line-height:1.5}.modal-body li{margin:8px 0}.hand{display:flex;flex-wrap:wrap;gap:7px}.playing-card{width:47px;height:65px;border:1px solid #d9c9a9;border-radius:7px;background:#fff;display:grid;place-items:center;font:900 19px Georgia;box-shadow:0 3px 7px #0001}.empty{color:var(--muted);font-style:italic}.log{max-height:235px;overflow:auto;font-size:13px}.log div{padding:8px;border-bottom:1px solid #eadfc9}.log div:first-child{font-weight:800;color:var(--green)}
+    .winner-panel{text-align:center;background:linear-gradient(145deg,#fff5bf,#fff);border-color:#e6bf39}.winner-panel .trophy{font-size:55px}.winner-panel h2{font-size:28px;margin:4px}.payouts{text-align:left;background:#fff9dd;border-radius:12px;padding:10px;margin:12px 0}.hide{display:none!important}
+    @media(min-width:620px){main{padding:22px}.game-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:14px}.game-grid .card{margin:0}.track{padding:12px}.lane{height:34px}}
+    @media(display-mode:standalone){header{padding-top:max(18px,env(safe-area-inset-top))}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <header><div class="brand">SCRATCHED<small>tabletop horse racing</small></div><button class="icon-btn" id="rulesBtn" aria-label="Rules">?</button></header>
+  <main>
+    <section id="setupView">
+      <div class="card hero"><div class="hero-mark">🏇</div><h1>Race day, in your pocket.</h1><p class="sub">Pass the phone, roll the dice, and let the odds decide. No cards or chips required.</p></div>
+      <div class="card"><h2>Who's at the track?</h2><div id="playerInputs"></div><button class="secondary wide" id="addPlayer">+ Add player</button>
+        <div class="setup-grid"><div><label for="startingChips">Starting chips</label><input id="startingChips" type="number" min="10" max="999" value="50"></div><div><label for="baseBet">Base bet</label><input id="baseBet" type="number" min="1" max="25" value="1"></div></div>
+        <button class="primary wide" id="startGame">Start race</button>
+      </div>
+      <button class="secondary wide hide" id="resumeGame">Resume saved race</button>
+    </section>
+
+    <section id="gameView" class="hide">
+      <div class="card status"><div><div class="phase" id="phaseLabel">Scratching horses</div><div class="turn" id="turnLabel">Alex's roll</div><p class="instruction" id="instruction"></p></div><div class="pot"><small>THE POT</small><span id="potLabel">0</span> 🟡</div></div>
+      <div class="players" id="playersBar"></div>
+      <div class="game-grid">
+        <div class="track" id="track"><div class="finish">FINISH LINE 🏁</div></div>
+        <div class="card roll-zone"><div class="dice" id="dice"><div class="die" id="die1">–</div><div class="die" id="die2">–</div></div><div class="result" id="result">Four horses must be scratched before the race.</div><button class="primary wide roll" id="rollBtn">Roll to scratch</button><button class="cards-btn" id="handBtn">View current player's cards</button></div>
+      </div>
+      <div class="card winner-panel hide" id="winnerPanel"><div class="trophy">🏆</div><h2 id="winnerTitle"></h2><p id="winnerText"></p><div class="payouts" id="payouts"></div><button class="primary wide" id="nextRace">Run another race</button></div>
+      <div class="card"><h2>Race call</h2><div class="log" id="log"></div></div>
+      <button class="danger wide" id="endGame">End game</button>
+    </section>
+  </main>
+</div>
+
+<dialog id="rulesDialog"><div class="modal-head"><h2>How to play</h2><button class="close" data-close="rulesDialog">×</button></div><div class="modal-body">
+  <ol><li>Every player antes one base bet. The 44 cards for horses 2–12 are dealt automatically.</li><li>Roll until four different horses are scratched. Matching cards are discarded and cost 1×, 2×, 3×, then 4× the base bet per card.</li><li>During the race, each dice total moves that horse one space. Rolling a scratched horse costs its scratch penalty.</li><li>The first horse across the finish line wins. Each card matching it receives one quarter of the pot.</li></ol>
+  <p><strong>Why are the lanes different lengths?</strong> Common totals are given longer tracks. Horse 7 needs 13 moves, while horses 2 and 12 need only 3, balancing their chances.</p>
+  <p>Jack represents horse 11 and Queen represents horse 12. Game state is saved on this device.</p>
+</div></dialog>
+<dialog id="handDialog"><div class="modal-head"><h2 id="handTitle">Your cards</h2><button class="close" data-close="handDialog">×</button></div><div class="modal-body"><div class="hand" id="handCards"></div><p class="sub" style="margin-top:15px">Cards are shown only on request so you can pass one phone around the table.</p></div></dialog>
+
+<script>
+const DIST={2:3,3:5,4:7,5:9,6:11,7:13,8:11,9:9,10:7,11:5,12:3};
+const HORSES=[2,3,4,5,6,7,8,9,10,11,12];
+const $=s=>document.querySelector(s); let state=null; let rolling=false;
+const money=n=>Number(n.toFixed(2)).toLocaleString(undefined,{maximumFractionDigits:2});
+function freshPlayers(){return ['Player 1','Player 2'].map(name=>({name,chips:50,cards:[]}));}
+let setupPlayers=freshPlayers();
+function renderPlayerInputs(){const box=$('#playerInputs');box.innerHTML='';setupPlayers.forEach((p,i)=>{const row=document.createElement('div');row.className='player-input';row.innerHTML=`<b>${i+1}</b><input aria-label="Player ${i+1} name" value="${escapeHtml(p.name)}"><button class="remove" aria-label="Remove player">×</button>`;row.querySelector('input').oninput=e=>setupPlayers[i].name=e.target.value;row.querySelector('button').onclick=()=>{if(setupPlayers.length>2){setupPlayers.splice(i,1);renderPlayerInputs()}};box.append(row)});$('#addPlayer').disabled=setupPlayers.length>=8}
+function escapeHtml(s){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+function shuffledDeck(){const deck=[];HORSES.forEach(n=>{for(let i=0;i<4;i++)deck.push(n)});for(let i=deck.length-1;i;i--){const j=Math.floor(Math.random()*(i+1));[deck[i],deck[j]]=[deck[j],deck[i]]}return deck}
+function deal(){state.players.forEach(p=>p.cards=[]);shuffledDeck().forEach((c,i)=>state.players[i%state.players.length].cards.push(c));state.players.forEach(p=>p.cards.sort((a,b)=>a-b))}
+function beginGame(){const names=setupPlayers.map((p,i)=>p.name.trim()||`Player ${i+1}`);const chips=Math.max(10,+$('#startingChips').value||50),base=Math.max(1,+$('#baseBet').value||1);state={players:names.map(name=>({name,chips,cards:[]})),base,pot:0,dealer:0,turn:1%names.length,phase:'scratch',scratched:[],progress:Object.fromEntries(HORSES.map(n=>[n,0])),dice:[0,0],winner:null,log:[],race:1};startRace(true)}
+function startRace(first=false){state.phase='scratch';state.scratched=[];state.progress=Object.fromEntries(HORSES.map(n=>[n,0]));state.winner=null;state.dice=[0,0];state.pot=0;state.players.forEach(p=>{p.cards=[];const ante=Math.min(p.chips,state.base);p.chips-=ante;state.pot+=ante});deal();state.turn=(state.dealer+1)%state.players.length;state.log=[];addLog(`Race ${state.race}: cards dealt. Everyone antes ${money(state.base)} chip${state.base===1?'':'s'}.`);if(!first)addLog(`${state.players[state.dealer].name} is the dealer.`);save();showGame();render()}
+function rollDice(){if(rolling||state.phase==='finished')return;rolling=true;$('#rollBtn').disabled=true;$('#dice').classList.add('shake');let ticks=0;const spin=setInterval(()=>{state.dice=[randDie(),randDie()];renderDice();if(++ticks>=7){clearInterval(spin);$('#dice').classList.remove('shake');resolveRoll();rolling=false;$('#rollBtn').disabled=false}},45)}
+function randDie(){return Math.floor(Math.random()*6)+1}
+function resolveRoll(){const total=state.dice[0]+state.dice[1],player=state.players[state.turn];if(state.phase==='scratch'){const old=state.scratched.find(s=>s.horse===total);if(old){pay(player,old.cost);setResult(`${player.name} rolled ${total}, already scratched—pays ${money(old.cost)}.`);addLog(`${total} again! ${player.name} pays ${money(old.cost)}.`)}else{const order=state.scratched.length+1,cost=state.base*order;state.scratched.push({horse:total,cost});let cards=0;state.players.forEach(p=>{const count=p.cards.filter(c=>c===total).length;if(count){cards+=count;pay(p,cost*count);p.cards=p.cards.filter(c=>c!==total)}});setResult(`Horse ${total} scratched at ${money(cost)} per card. ${cards} card${cards===1?'':'s'} discarded.`);addLog(`Horse ${total} is scratch #${order}. ${money(cost)} per matching card.`);if(state.scratched.length===4){state.phase='race';addLog('The field is set. They’re off!')}}advanceTurn()}else{const scratched=state.scratched.find(s=>s.horse===total);if(scratched){pay(player,scratched.cost);setResult(`${player.name} rolled scratched horse ${total} and pays ${money(scratched.cost)}.`);addLog(`${total} is scratched—${player.name} pays the pot.`)}else{state.progress[total]++;setResult(`Horse ${total} advances! ${state.progress[total]} of ${DIST[total]} spaces.`);addLog(`Horse ${total} moves to ${state.progress[total]}/${DIST[total]}.`);if(state.progress[total]>=DIST[total]){finishRace(total);save();render();return}}advanceTurn()}save();render()}
+function pay(player,amount){const paid=Math.min(player.chips,amount);player.chips-=paid;state.pot+=paid;return paid}
+function advanceTurn(){state.turn=(state.turn+1)%state.players.length}
+function finishRace(horse){state.phase='finished';state.winner=horse;const share=state.pot/4;const payouts=[];state.players.forEach(p=>{const count=p.cards.filter(c=>c===horse).length;if(count){const prize=share*count;p.chips+=prize;payouts.push({name:p.name,count,prize})}});addLog(`Horse ${horse} wins! The ${horseLabel(horse)} holders split ${money(state.pot)} chips.`);state.payouts=payouts}
+function setResult(t){$('#result').textContent=t}
+function addLog(t){state.log.unshift(t)}
+function horseLabel(n){return n===11?'Jacks':n===12?'Queens':String(n)+'s'}
+function render(){if(!state)return;$('#phaseLabel').textContent=state.phase==='scratch'?`Scratching horses · ${state.scratched.length}/4`:state.phase==='race'?`Race ${state.race} · They're off!`:`Race ${state.race} complete`;$('#turnLabel').textContent=state.phase==='finished'?`Horse ${state.winner} wins!`:`${state.players[state.turn].name}'s roll`;$('#instruction').textContent=state.phase==='scratch'?'Roll a new total to scratch a horse.':state.phase==='race'?'The dice total moves that horse one space.':'Payouts have been added to player totals.';$('#potLabel').textContent=money(state.pot);$('#rollBtn').textContent=state.phase==='scratch'?'Roll to scratch':'Roll the dice';$('#rollBtn').classList.toggle('hide',state.phase==='finished');$('#handBtn').classList.toggle('hide',state.phase==='finished');renderDice();renderPlayers();renderTrack();renderLog();renderWinner()}
+function renderDice(){$('#die1').textContent=state?.dice[0]||'–';$('#die2').textContent=state?.dice[1]||'–'}
+function renderPlayers(){const bar=$('#playersBar');bar.innerHTML='';state.players.forEach((p,i)=>{const d=document.createElement('button');d.className='player-chip'+(i===state.turn&&state.phase!=='finished'?' active':'');d.innerHTML=`<strong>${escapeHtml(p.name)}</strong><span>${money(p.chips)} 🟡 · ${p.cards.length} cards</span>`;d.onclick=()=>showHand(i);bar.append(d)})}
+function renderTrack(){const track=$('#track');track.querySelectorAll('.lane').forEach(n=>n.remove());HORSES.forEach(n=>{const scratched=state.scratched.some(s=>s.horse===n);const lane=document.createElement('div');lane.className='lane'+(scratched?' scratched':'')+(state.winner===n?' winner':'');const pct=Math.min(100,(state.progress[n]/DIST[n])*96+2);lane.innerHTML=`<div class="num">${n}</div><div class="rail"><span class="horse" style="--p:${pct}">🏇</span></div>`;track.append(lane)})}
+function renderLog(){const log=$('#log');log.innerHTML=state.log.map(x=>`<div>${escapeHtml(x)}</div>`).join('')}
+function renderWinner(){const panel=$('#winnerPanel');panel.classList.toggle('hide',state.phase!=='finished');if(state.phase!=='finished')return;$('#winnerTitle').textContent=`Horse ${state.winner} takes it!`;$('#winnerText').textContent=`Each ${state.winner===11?'Jack':state.winner===12?'Queen':state.winner} card wins ${money(state.pot/4)} chips.`;$('#payouts').innerHTML=state.payouts.length?state.payouts.map(p=>`<div><strong>${escapeHtml(p.name)}</strong> · ${p.count} card${p.count===1?'':'s'} · +${money(p.prize)} 🟡</div>`).join(''):'<div>No payout recorded.</div>'}
+function showHand(i=state.turn){const p=state.players[i];$('#handTitle').textContent=`${p.name}'s cards`;$('#handCards').innerHTML=p.cards.length?p.cards.map(n=>`<div class="playing-card">${n===11?'J':n===12?'Q':n}</div>`).join(''):'<span class="empty">All matching cards were scratched.</span>';$('#handDialog').showModal()}
+function showGame(){$('#setupView').classList.add('hide');$('#gameView').classList.remove('hide')}
+function save(){localStorage.setItem('scratchedGame',JSON.stringify(state))}
+function loadSaved(){try{const s=JSON.parse(localStorage.getItem('scratchedGame'));if(s?.players?.length){state=s;showGame();render()}}catch(e){localStorage.removeItem('scratchedGame')}}
+function endGame(){if(confirm('End this game and return to setup?')){localStorage.removeItem('scratchedGame');state=null;$('#gameView').classList.add('hide');$('#setupView').classList.remove('hide');$('#resumeGame').classList.add('hide')}}
+$('#addPlayer').onclick=()=>{if(setupPlayers.length<8){setupPlayers.push({name:`Player ${setupPlayers.length+1}`,chips:50,cards:[]});renderPlayerInputs()}};
+$('#startGame').onclick=beginGame;$('#rollBtn').onclick=rollDice;$('#handBtn').onclick=()=>showHand();$('#rulesBtn').onclick=()=>$('#rulesDialog').showModal();$('#endGame').onclick=endGame;$('#nextRace').onclick=()=>{state.race++;state.dealer=(state.dealer+1)%state.players.length;startRace()};
+document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>$('#'+b.dataset.close).close());document.querySelectorAll('dialog').forEach(d=>d.onclick=e=>{if(e.target===d)d.close()});
+renderPlayerInputs();if(localStorage.getItem('scratchedGame')){$('#resumeGame').classList.remove('hide');$('#resumeGame').onclick=loadSaved}
+if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js'));
+</script>
+</body>
+</html>
